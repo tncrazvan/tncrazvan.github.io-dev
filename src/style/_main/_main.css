@@ -1,0 +1,41 @@
+html,body{
+	font-family: 'Roboto', sans-serif;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+img{
+	max-width: 100%;
+}
+.display-none{
+	display: none;
+}
+.border-radius-0{
+	border-radius: 0;
+}
+
+.full-width{
+	width: 100%;
+}
+
+.block{
+	display: block;
+}
+
+.relative{
+	position: relative;
+}
+.margin-auto{
+	margin: auto;
+}
+
+.text-left{
+	text-align: left;
+}
+.text-right{
+	text-align: right;
+}
+.text-center{
+	text-align: center;
+}

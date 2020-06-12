@@ -1,0 +1,8 @@
+node_modules/
+public/build/
+src/style/main.css
+src/style/scrollbar/scrollbar.css
+src/style/materialize/materialize.css
+src/style/extra/extra.css
+src/shared/
+.DS_Store
