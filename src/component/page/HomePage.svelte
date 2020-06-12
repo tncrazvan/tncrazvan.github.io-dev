@@ -19,7 +19,6 @@
 	let error = "";
 
 	async function getPosts(){
-		debugger;
 		let response = new Array();
 		let list = await fetch("/posts/list.json");
 		list = await list.json();
@@ -115,11 +114,11 @@
 			{#await promise.posts}
 				<SpinnerElipsis />
 			{:then posts}
-				{#each posts.sort(sortBy("lastChange")) as post}
+				{#each posts.sort(sortBy("lastChange",true)) as post}
 					<div transition:fly={{y:-100,duration: 1000}} class="post">
 						<h3>{post.title}</h3>
 						<small>{new Date(post.lastChange*1000).toDateString()}</small><br />
-						{window.atob(post.content)}
+						{@html window.atob(post.content)}
 					</div>
 				{/each}
 			{/await}
