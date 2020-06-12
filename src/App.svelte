@@ -19,7 +19,7 @@
 
 	let url = window.location.pathname;
 </script>
-<SideMenu
+<!--<SideMenu
 	background="/images/landscape.jpg"
 	image="/images/profile-pic.jpg"
 	title="Razvan Tanase"
@@ -44,9 +44,12 @@
 	<SideMenuItem icon="code">
 		Arcano
 	</SideMenuItem>
-</SideMenu>
+</SideMenu>-->
 <Router url="{url}">
     <Route path="/" component="{HomePage}" />
     <Route path="/index.html" component="{HomePage}" />
 </Router>
-<Theme/>
+<Theme variables={{
+	"--main-button-border-radius": "3rem",
+	"--main-button-waves": "#922a1a"
+}}/>
