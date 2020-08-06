@@ -62,8 +62,7 @@ async function getData(){
 			<li class="collection-item">
 					<b>Install composer</b><br />
 					In order to run the server you'll need composer.<br />
-					Composer is a package manager for php and it also offser an autoloader.
-					<hr>
+					Composer is a package manager for php and it also offser an autoloader.<br /><br />
 					<a target="_blank" href="https://getcomposer.org/">
 						<IconButton>Download composer</IconButton>
 					</a>
@@ -240,6 +239,146 @@ async function getData(){
 		constructor:
 		<Coding padding="1rem" language="php">{data.websocket_test_constructor_only}</Coding>
 		<br />
+		<br />
+		<br />
+		<br />
+		<!--##################### Injections #####################-->
+		<SectionTitle id="controllers">Injections table</SectionTitle>
+		Here are all the injections you can make use of.<br />
+		Note that your application will inject your parameter based on either its <red>Name</red> or <red>Type</red> or a combination of the two.<br />
+		Any other parameter that does not meet any of the requirements in the following table will be injected as <Coding>null</Coding> or as one of 
+		<u>path variables</u> based on the variable <red>Name</red>.<br /><br />
+		<table>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Type</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr>
+					<td><Coding>$e</Coding></td>
+					<td><Coding><red>HttpEvent</red></Coding></td>
+					<td>
+						This is the HttpEvent that manages the current request.<br />You can also find this object in the global $_EVENT variable.<br />
+						This object contains data regarding the current connection, the socket object as a stream and a handful of useful methods to manipulate 
+						the request, starting sessions, setting cookies ecc.
+					</td>
+				</tr>
+				<tr>
+					<td><Coding>&$onClose</Coding></td>
+					<td><Coding><red>HttpEventOnClose</red></Coding></td>
+					<td>
+						This is the pointer to a cycle class. Its <b>run</b> method will be trigered when the connection is over.<br />
+						Usually you would want to close your database connection here or do some chores <b>after</b> replying to the user.<br /><br />
+						<b>NOTE:</b>&nbsp;&nbsp;it is important that you take in this parameter as a pointer.
+					</td>
+				</tr>
+				<tr>
+					<td><Coding><red>&$session</red></Coding></td>
+					<td><Coding><red>array</red></Coding></td>
+					<td>
+						Contains the current use session array, which you can freely modify (is specified as a pointer).<br /><br/>
+
+						This parameter injection requires the variable itself to be named exactly <red>$session</red>.<br />
+						Pointer is not required.
+					</td>
+				</tr>
+				<tr>
+					<td><Coding><red>$method</red></Coding></td>
+					<td><Coding><red>string</red></Coding></td>
+					<td>
+						Contains the method name of the request.
+					</td>
+				</tr>
+				<tr>
+					<td><Coding><red>&$body</red></Coding></td>
+					<td><Coding><red>string</red> or <red>int</red> or <red>array</red></Coding></td>
+					<td>
+						Contains the body of the request.<br /><br />
+
+						This parameter injection requires the variable itself to be named exactly <red>body</red>, of type <red>string</red> or <red>int</red> or <red>array</red>.<br />
+						<br />
+						Pointer is not required.<br /><br />
+
+						<b>NOTE:</b> if the parameter is specified to be of type <red>array</red>, your application will attempt to parse the body as a json object or array.
+					</td>
+				</tr>
+				<tr>
+					<td><Coding>&$onOpen</Coding></td>
+					<td><Coding><red>WebSocketEventOnOpen</red></Coding></td>
+					<td>
+						Pointer to a websocket cycle function.<br />
+						This function will trigger when the websocket connection opens (handshake successul).
+					</td>
+				</tr>
+				<tr>
+					<td><Coding>&$onMessage</Coding></td>
+					<td><Coding><red>WebSocketEventOnMessage</red></Coding></td>
+					<td>
+						Pointer to a websocket cycle function.<br />
+						This function will trigger when the websocket connection recieves a message.
+					</td>
+				</tr>
+				<tr>
+					<td><Coding>&$onClose</Coding></td>
+					<td><Coding><red><u>WebSocket</u>EventOnClose</red></Coding></td>
+					<td>
+						Pointer to a websocket cycle function.<br />
+						This function will trigger when the websocket connection closes (by either parties).
+					</td>
+				</tr>
+				<tr>
+					<td><Coding>&$onClose</Coding></td>
+					<td><Coding><red><u>Http</u>EventOnClose</red></Coding></td>
+					<td>
+						Pointer to an htpp cycle function.<br />
+						This function will trigger when the http connection closes (by either parties).
+					</td>
+				</tr>
+				<tr>
+					<td><Coding>$cookies</Coding></td>
+					<td><Coding><red>HttpRequestCookies</red></Coding></td>
+					<td>
+						Contains an object that helps you read the cookies sent along with the request.
+					</td>
+				</tr>
+				<tr>
+					<td><Coding>$cookies</Coding></td>
+					<td><Coding><red>HttpResponseCookies</red></Coding></td>
+					<td>
+						Contains an object that helps you write the cookies your application will send along with the response.
+					</td>
+				</tr>
+				<tr>
+					<td><Coding>$e</Coding></td>
+					<td><Coding><red><u>Http</u>Event</red></Coding></td>
+					<td>
+						Contains an the HttpEvent instance for the current http request.<br /><br />
+
+						<b>NOTE:</b> the HttpEvent class contains a handful of useful methods and allows specific manipulation of the current request and response.
+					</td>
+				</tr>
+				<tr>
+					<td><Coding>$e</Coding></td>
+					<td><Coding><red><u>WebSocket</u>Event</red></Coding></td>
+					<td>
+						Contains an the WebSocketEvent instance for the current websocket request.<br /><br />
+
+						<b>NOTE:</b> the WebSocketEvent class contains a handful of useful methods and allows specific manipulation of the current request and response.
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<br />
+		<br />
+		All these injections can be defined in both http events and websocket events.<br />
+		This means that it is possible, for example, to manipulate a session from the websocket.
+		<br />
+		<br />
+		<br />
 	</div>
 </div>
 {/await}
@@ -256,5 +395,8 @@ async function getData(){
 	.top-title{
 		margin-left: 1em;
 		display: inline-block;
+	}
+	red{
+		color: red;
 	}
 </style>

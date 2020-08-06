@@ -52,4 +52,9 @@ let url = window.location.pathname;
 	:global(tr){
 		border-color: var(--main-horizontalLine-color);
 	}
+	:global(hr){
+		border: 0;
+		height: 1px;
+		background: rgba(255,255,255,0.3) !important;
+	}
 </style>
