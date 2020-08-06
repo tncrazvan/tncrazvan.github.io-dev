@@ -1,5 +1,5 @@
 <script>
-	import IconButton from './../../shared/component/button/IconButton.svelte';
+	import IconButton from '../button/IconButton.svelte';
 	import TopMenu from './TopMenu.svelte';
 </script>
 <div class="TopMenu">

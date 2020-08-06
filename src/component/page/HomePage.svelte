@@ -1,37 +1,39 @@
 <script>
-	import SectionTitle from './../text/SectionTitle.svelte';
-	import IconButton from './../../shared/component/button/IconButton.svelte';
-	import Coding from './../highlighter/Coding.svelte';
-	import SpinnerElipsis from './../../shared/component/misc/SpinnerElipsis.svelte';
-	import TopMenu from './../menu/TopMenu.svelte';
-	import { fly, fade } from 'svelte/transition';
-	import CenteredGrid from './../../shared/component/wrapper/CenteredGrid.svelte';
-	import Page from './../../shared/component/wrapper/page/Page.svelte';
+import SectionTitle from './../text/SectionTitle.svelte';
+import IconButton from '../button/IconButton.svelte';
+import Coding from './../highlighter/Coding.svelte';
+import TopMenu from './../menu/TopMenu.svelte';
+import { fly, fade } from 'svelte/transition';
+import Spinner from '../Spinner.svelte';
 
-	let promise = getData();
-	async function getData(){
-		const REGEX = /^\<\?php\r?\n?/g;
-		let data = {
-			location: "tncrazvan/catpawskeleton",
-			http: (await (await fetch("/docs/examples/config.php")).text()).replace(REGEX,""),
-			example: {
-				controller1: (await (await fetch("/docs/examples/Hello/1.php")).text()).replace(REGEX,""),
-				controller3: (await (await fetch("/docs/examples/Hello/3.php")).text()).replace(REGEX,""),
-				controller4: (await (await fetch("/docs/examples/Hello/4.php")).text()).replace(REGEX,""),
-				controller5: (await (await fetch("/docs/examples/Hello/5.php")).text()).replace(REGEX,""),
-			}
-		};
+let promise = getData();
 
-		return data;
-	}
+async function getData(){
+	const REGEX = /^\<\?php\r?\n?/g;
+	let data = {
+		location: "tncrazvan/catpaw-template",
+		main: (await (await fetch("/docs/main.php")).text()).replace(REGEX,""),
+		event_1: (await (await fetch("/docs/event_1.php")).text()).replace(REGEX,""),
+		event_1_2: (await (await fetch("/docs/event_1_2.php")).text()).replace(REGEX,""),
+		event_2: (await (await fetch("/docs/event_2.php")).text()).replace(REGEX,""),
+		home_page: (await (await fetch("/docs/HomePage.php")).text()).replace(REGEX,""),
+		websocket_test: (await (await fetch("/docs/WebSocketTest.php")).text()).replace(REGEX,""),
+		websocket_test_constructor_only: (await (await fetch("/docs/WebSocketTest_constructor_only.php")).text()).replace(REGEX,""),
+		index: (await (await fetch("/docs/index.php")).text())
+	};
+
+	return data;
+}
 </script>
 
-<Page desktopWidth="100%">
-	{#await promise}
-		<div transition:fade={{duration: 250}}>
-			<SpinnerElipsis />
-		</div>
-	{:then data}
+
+{#await promise}
+<div class="max-full full-height grid-x-center grid-y-center" transition:fade={{duration: 250}}>
+	<!-- <SpinnerElipsis /> -->
+	<Spinner />
+</div>
+{:then data}
+<div class="row">
 	<div class="
 		col
 		offset-s0 s12
@@ -45,8 +47,10 @@
 		<h4 class="top-title">What is CatPaw?</h4>
 		<p>
 			CatPaw is a lightweight web server written in Php for <b>Linux</b>.<br>
-			Although it's not complete yet, it offers a few useful features such as an MVC design pattern and a WebSocket API.
+			Although it's not complete yet, it offers a few useful features such as an MVC-like design pattern and a WebSocket API.
 		</p>
+		<br/>
+		<br/>
 		<br/>
 
 		<!--##################### HOW TO START #####################-->
@@ -82,87 +86,163 @@
 					<Coding language="bash">sudo ./start</Coding>
 			</li>
 		</ul>
+		<br />
+		<br />
+		<br />
 
-
-		<!--##################### CONTROLLERS #####################-->
-		<SectionTitle id="controllers">Controllers</SectionTitle>
+		<!--##################### Events #####################-->
+		<SectionTitle id="controllers">Events</SectionTitle>
 		<p>
-			Controllers play a central role when developing a web service.<br />
-			A controller has the role of serving or fetching data from client http or websocket requests.
+			Events will play a central role in your application.<br />
+			You can think of events as controllers in a true MVC application, the only difference is 
+			that events are not identifies by classes, but instead they are identified by anonymus
+			functions.<br />
+
+			Much like a controller, an event has the role of serving/fetching data from/to the incoming requests.<br />
+			You can manage both Http and WebSocket requests using events.
 		</p>
 		<p>
-			Controller don't have a specific file system location, infact, any class that extends the abstract class 
-			<coding language="php">\com\github\tncrazvan\catpaw\http\HttpController</coding> is an http controller.
-			On the other hand, any class extending <Coding language="php">\com\github\tncrazvan\catpaw\websocket\WebSocketController</Coding>
-			is a websocket controller.<br />
+			Basically an event is a function exposed to the ouside world.
 		</p>
 		<p>
-			These controllers however are not exposed to the web, which means they are not attatched to any specific route yet.<br />
-			In order to expose a controller you must define it's classname in <b>config/config.php</b> in the <Coding language="js">controllers.http</Coding> field.
+			Your application will have a "<u>main.php</u>" file which will define all your options, including your events and their mapping.<br />
+
+			Here's an example of such a file:<br />
+			<Coding padding="1rem" language="php">{data.main}</Coding><br />
+
+			As you can see the script returns an array and as mentioned above, that array contains your application settings, and the fields
+			<Coding language="php">$main["events"]["http"]</Coding> and <Coding language="php">$main["events"]["websocket"]</Coding> contain your http and websocket events.<br />
+
+			These events are directly exposed to the web.<br />
 		</p>
-		<p>
-			Open <b>/config/config.php</b> in a text editor. You should see something like this:<br /><br />
-			<Coding language="json">{data.http}</Coding><br /><br />
-			All you need to do in order to define a namespace for your controller is to add your class to the  
-			<Coding language="json">controllers.http</Coding> field.<br />
-			You must do the same for websocket controllers, except you must act on the <Coding language="json">controllers.websocket</Coding>
-			field.
-		</p>
-		<p>
-			The CatPaw library defines some virtual paths for your by default, such as "@file" which ensures that the server can serve normal files and "@404" which ensures the server responds with a 404 Not Found when the requested resource cannot be found, instead of hanging the socket connection.<br />
-			An ascii table is printed to the console when running the server, this table contains all the information your server uses, including all these virtual paths and your custom paths
-		</p>
+		<br />
+		<br />
+		<br />
+
+		<!--##################### HttpEvent /hello/{test} #####################-->
+		<SectionTitle id="controllers">HttpEvent /hello/&lbrace;test&rbrace;</SectionTitle>
+		The first http path we encounter in the above example is <Coding>/hello/&lbrace;test&rbrace;</Coding>, 
+		this path will match any request at <Coding>/test/</Coding> followed by any other string or number.<br />
+		
+		The assigned function takes in a few parameters, and all of them are completely <b>optional</b>.<br />
+		The order of the parameters is not important, your application will automatically inject the parameters accordingly so you don't have to worry about it.<br />
+		A quick description on what the parameters we see on this specific function mean:<br />
+		<Coding padding="1rem" language="php">{data.event_1}</Coding><br />
+		which can also be written as:<br />
+		<Coding padding="1rem" language="php">{data.event_1_2}</Coding><br />
+		<table>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Type</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr>
+					<td><Coding>$test</Coding></td>
+					<td><Coding>string</Coding></td>
+					<td>
+						This parameter is the requested <Coding>&lbrace;test&rbrace;</Coding> path variable<br/><br />
+						<b>NOTE:</b>&nbsp;&nbsp;this parameter is a string, however if it were an <Coding>int</Coding> your application would 
+						try to convert any given value to int and throw an exception on failure, so be aware of this detail.
+					</td>
+				</tr>
+				<tr>
+					<td><Coding>$e</Coding></td>
+					<td><Coding>HttpEvent</Coding></td>
+					<td>
+						This is the HttpEvent that manages the current request.<br />You can also find this object in the global $_EVENT variable.<br />
+						This object contains data regarding the current connection, the socket object as a stream and a handful of useful methods to manipulate 
+						the request, starting sessions, setting cookies ecc.
+					</td>
+				</tr>
+				<tr>
+					<td><Coding>&$onClose</Coding></td>
+					<td><Coding>HttpEventOnClose</Coding></td>
+					<td>
+						This is the pointer to a cycle class. Its <b>run</b> method will be trigered when the connection is over.<br />
+						Usually you would want to close your database connection here or do some chores <b>after</b> replying to the user.<br /><br />
+						<b>NOTE:</b>&nbsp;&nbsp;it is important that you take in this parameter as a pointer.
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<br />
+		Usually the function would return a custom object, which would be converted int a json or xml depending on the request "Accept" header, 
+		but in this case it return a <Coding>HomePage</Coding> instance, which implement the <Coding>HttpEventInterface</Coding> interface:<br />
+		<Coding padding="1rem" language="php">{data.home_page}</Coding>
+		<br />
+		<br />
+		<br />
 
 
-		<!--##################### CONTROLLER EXAMPLE #####################-->
-		<SectionTitle id="controllers">Controller Example</SectionTitle>
-		<ul class="collection">
-			<li class="collection-item">
-					<p>
-						We're gonna use the default namespace for this example.<br />
-						Make a new file under <b>/controllers/http/</b> named <b>Hello.php</b> 
-						and throw in the basics: namespace and a class with the same name as the file:
-					</p>
-					<Coding language="php">{data.example.controller1}</Coding>
-			</li>
-			<li class="collection-item">
-					<p>
-						Now we extend the HttpController in order to allow this class to act as a controller.
-					</p>
-					<Coding language="php">{data.example.controller3}</Coding>
-			</li>
-			<li class="collection-item">
-					<p>
-						The <b>main</b> method is called only when no method is specified in the controller request, 
-						so we can look at it as a fallback method.<br />
-						The <b>onClose</b> method is always called if defined in your class.<br />
-						This method is supposed to be used to undo changes, 
-						or close database connections before closing the http connection itself.<br />
-						It's a cleanup method.
-					</p>
-					<br />
-					<p>
-						The next step is to reply to the client with a message.<br />
-						We'll reply with "hello".
-					</p>
-					<p>
-						One way to reply to the client is to simply call the method
-						<b>HttpEvent::send($data)</b>.<br />
-						Note that HttpController extends HttpEvent, thus your controller inherits HttpEvent::send.<br />
-						Here's an example:
-					</p>
-					<Coding language="php">{data.example.controller4}</Coding>
-					<p>
-						Another way of replying is to return a proper HttpResponse object.
-					</p>
-					<Coding language="php">{data.example.controller5}</Coding>
-			</li>
-		</ul>
 
+		<!--##################### HttpEvent /templating/{username} #####################-->
+		<SectionTitle id="controllers">HttpEvent /templating/&lbrace;username&rbrace;</SectionTitle>
+		The second http path we encounter in the example is <Coding>/templating/&lbrace;username&rbrace;</Coding>, 
+		this path will match any request at <Coding>/templating/</Coding> followed by any other string or number.<br />
+		
+		The same logic as in the previous event applies here, the only difference here is that that, 
+		while the previous function returned an <Coding>HomePage</Coding> instance, this time <Coding language="php">ServerFile::include('./templates/index.php',$username);</Coding>
+		is returned instead:<br />
+		<Coding padding="1rem" language="php">{data.event_2}</Coding><br />
+		which in turn returns the buffered contents of the <Coding>./templates/index.php</Coding> file:<br />
+		<Coding padding="1rem" language="php">{data.index}</Coding><br />
+		<br />
+		The returned script makes use of some methods:<br />
+		<br />
+		<table>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Description</th>
+				</tr>
+			</thead>
 
+			<tbody>
+				<tr>
+					<td><Coding language="php">Script::args()</Coding></td>
+					<td>
+						Returns the arguments passed to the 
+						<Coding language="php">ServerFile::include('./templates/index.php',...$args)</Coding>
+						call.
+					</td>
+				</tr>
+				<tr>
+					<td><Coding language="php">&Script::startSession();</Coding></td>
+					<td>
+						Returns the pointer of the user session array, which you can freely modify.<br />
+						If the user does not already have a session or the <b>sessionId</b> cookie is not valid, 
+						a new session is created instead and the response <b>sessionId</b> cookie is <u>updated</u>.
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<br />
+		<br />
+		<br />
+		
+		<!--##################### WebSocketEvent /test #####################-->
+		<SectionTitle id="controllers">WebSocketEvent /test</SectionTitle>
+		The third and final path we encounter in the example is a websocket path.<br />
+		The same exact logic as in the http functions applies here, except this function should not return anything, except for an instance of
+		a class that implements <Coding>WebSocketEventInterface</Coding>, in any other cases, 
+		the function should simply take in any of the following 3 parameter types as pointers:
+		<Coding>WebSocketEventOnOpen</Coding>,<Coding>WebSocketEventOnMessage</Coding>,<Coding>WebSocketEventOnClose</Coding>.<br />
+		<br />
+		Once the pointers are defined, you can simply overwrite them with your own logic.<br />
+		In this case the anonymus function makes an expcetion by returning an instance of a class, specifically the 
+		<Coding>WebSocketTest</Coding> class whici implements the <Coding>WebSocketEventInterface</Coding>:<br />
+		<Coding padding="1rem" language="php">{data.websocket_test}</Coding><br />
+		Once the 3 pointers are defined, you can overwrite them with your own objects, as you can see in the <Coding>WebSocketTest</Coding>
+		constructor:
+		<Coding padding="1rem" language="php">{data.websocket_test_constructor_only}</Coding>
+		<br />
 	</div>
-	{/await}
-</Page>
+</div>
+{/await}
 
 <style>
 	.top-logo{
