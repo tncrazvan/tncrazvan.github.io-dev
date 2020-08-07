@@ -170,7 +170,7 @@ async function getData(){
 		</table>
 		<br />
 		Usually the function would return a custom object, which would be converted int a json or xml depending on the request "Accept" header, 
-		but in this case it return a <Coding>HomePage</Coding> instance, which implement the <Coding>HttpEventInterface</Coding> interface:<br />
+		but in this case it return a <Coding>HomePage</Coding> instance, which implement the <Coding>HttpEventHandler</Coding> interface:<br />
 		<Coding padding="1rem" language="php">{data.home_page}</Coding>
 		<br />
 		<br />
@@ -227,13 +227,13 @@ async function getData(){
 		<SectionTitle id="controllers">WebSocketEvent /test</SectionTitle>
 		The third and final path we encounter in the example is a websocket path.<br />
 		The same exact logic as in the http functions applies here, except this function should not return anything, except for an instance of
-		a class that implements <Coding>WebSocketEventInterface</Coding>, in any other cases, 
+		a class that implements <Coding>WebSocketEventHandler</Coding>, in any other cases, 
 		the function should simply take in any of the following 3 parameter types as pointers:
 		<Coding>WebSocketEventOnOpen</Coding>,<Coding>WebSocketEventOnMessage</Coding>,<Coding>WebSocketEventOnClose</Coding>.<br />
 		<br />
 		Once the pointers are defined, you can simply overwrite them with your own logic.<br />
 		In this case the anonymus function makes an expcetion by returning an instance of a class, specifically the 
-		<Coding>WebSocketTest</Coding> class whici implements the <Coding>WebSocketEventInterface</Coding>:<br />
+		<Coding>WebSocketTest</Coding> class whici implements the <Coding>WebSocketEventHandler</Coding>:<br />
 		<Coding padding="1rem" language="php">{data.websocket_test}</Coding><br />
 		Once the 3 pointers are defined, you can overwrite them with your own objects, as you can see in the <Coding>WebSocketTest</Coding>
 		constructor:
