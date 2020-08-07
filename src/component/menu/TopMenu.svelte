@@ -6,7 +6,7 @@
 	<IconButton icon="flag">
 		QUICK START
 	</IconButton>
-	<IconButton onClick={()=>window.open("https://github.com/tncrazvan/CatPaw")} icon="archive">
+	<IconButton onClick={()=>window.open("https://github.com/tncrazvan/catpaw")} icon="archive">
 		REPOSITORY
 	</IconButton>
 </div>
