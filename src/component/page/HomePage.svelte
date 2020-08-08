@@ -94,8 +94,8 @@ async function getData(){
 		<p>
 			Events will play a central role in your application.<br />
 			You can think of events as controllers in a true MVC application, the only difference is 
-			that events are not identifies by classes, but instead they are identified by anonymus
-			functions.<br />
+			that events are not identified by classes, but instead they are identified by anonymus
+			functions.<br /><br />
 
 			Much like a controller, an event has the role of serving/fetching data from/to the incoming requests.<br />
 			You can manage both Http and WebSocket requests using events.
@@ -104,12 +104,17 @@ async function getData(){
 			Basically an event is a function exposed to the ouside world.
 		</p>
 		<p>
-			Your application will have a "<u>main.php</u>" file which will define all your options, including your events and their mapping.<br />
+			Your application will have a "<u>main.php</u>" file which will define all your options, including your events and their path mapping.<br />
+			These events are mapped on an associative array.<br />
+			The <b>key</b> of arrayare the public path mappings, while the values are the actual callback
+			functions which will be called everytime a path matches a request.<br />
+			<br />
 
 			Here's an example of such a file:<br />
 			<Coding padding="1rem" language="php">{data.main}</Coding><br />
 
-			As you can see the script returns an array and as mentioned above, that array contains your application settings, and the fields
+			As you can see the script returns a nested array and as mentioned above, that array contains your application's settings.<br />
+			The fields
 			<Coding language="php">$main["events"]["http"]</Coding> and <Coding language="php">$main["events"]["websocket"]</Coding> contain your http and websocket events.<br />
 
 			These events are directly exposed to the web.<br />
@@ -144,7 +149,8 @@ async function getData(){
 						<td><Coding>$test</Coding></td>
 						<td><Coding>string</Coding></td>
 						<td>
-							This parameter is the requested <Coding>&lbrace;test&rbrace;</Coding> path variable<br/><br />
+							This parameter is the requested <Coding>&lbrace;test&rbrace;</Coding> path variable<br/>
+							<br />
 							<b>NOTE:</b>&nbsp;&nbsp;this parameter is a string, however if it were an <Coding>int</Coding> your application would 
 							try to convert any given value to int and throw an exception on failure, so be aware of this detail.
 						</td>
@@ -153,7 +159,8 @@ async function getData(){
 						<td><Coding>$e</Coding></td>
 						<td><Coding>HttpEvent</Coding></td>
 						<td>
-							This is the HttpEvent that manages the current request.<br />You can also find this object in the global $_EVENT variable.<br />
+							This is the HttpEvent that manages the current request.<br />
+							You can also find this object in the global $_EVENT variable.<br />
 							This object contains data regarding the current connection, the socket object as a stream and a handful of useful methods to manipulate 
 							the request, starting sessions, setting cookies ecc.
 						</td>
@@ -162,7 +169,8 @@ async function getData(){
 						<td><Coding>&$onClose</Coding></td>
 						<td><Coding>HttpEventOnClose</Coding></td>
 						<td>
-							This is the pointer to a cycle class. Its <b>run</b> method will be trigered when the connection is over.<br />
+							This is the pointer to a cycle class instance.<br />
+							Its <b>run</b> method will be trigered when the connection is over.<br />
 							Usually you would want to close your database connection here or do some chores <b>after</b> replying to the user.<br /><br />
 							<b>NOTE:</b>&nbsp;&nbsp;it is important that you take in this parameter as a pointer.
 						</td>
@@ -171,10 +179,23 @@ async function getData(){
 			</table>
 		</div>
 		<br />
-		Usually the function would return a custom object, which would be converted int a json or xml depending on the request "Accept" header, 
-		but in this case it return a <Coding>HomePage</Coding> instance, which extends the <Coding>HttpEventHandler</Coding> abstract class:<br />
+		Usually the function would return a  string, number or custom object which would be converted into json or xml depending on the request "Accept" header.<br/>
+		In this case it returns a <Coding>HomePage</Coding> instance, which is a special class since it extends the <Coding>HttpEventHandler</Coding> abstract class:<br />
 		<Coding padding="1rem" language="php">{data.home_page}</Coding>
 		<br />
+		<br />
+		If your callback function returns an instance of <Coding>HttpEventHandler</Coding> your application will look for a implementation of
+		an <Coding>HttpMethod*</Coding> interface and run it's implamentation method if it matches the request "method" header.<br />
+		<br />
+		In this case the <Coding>HomePage</Coding> class extends <Coding>HttpEventHandler</Coding> (which tells your aplication to <u>not</u> return the instances
+		of this class directly) and implements the <Coding>HttpMethodGet</Coding> and <Coding>HttpMethodPost</Coding> interfaces
+		(which tells your application to look for a <Coding>get</Coding> or <Coding>post</Coding> method).<br />
+		<br />
+		<b>TLDR;</b> any <b>GET</b> requests to <Coding>/hello/&lbrace;test&rbrace;</Coding> will run the <Coding>post</Coding> method
+		and any <b>POST</b> requests to <Coding>/hello/&lbrace;test&rbrace;</Coding> will run the <Coding>get</Coding> method instaed.<br />
+		<br />
+		Any other type of requests that are not <b>GET</b> or <b>POST</b> will return a blank <Coding>"404 METHOD NOT ALLOWED"</Coding> response.
+		<br/>
 		<br />
 		<br />
 
@@ -250,6 +271,8 @@ async function getData(){
 		<SectionTitle id="controllers">Injections table</SectionTitle>
 		Here are all the injections you can make use of.<br />
 		Note that your application will inject your parameter based on either its <red>Name</red> or <red>Type</red> or a combination of the two.<br />
+		The following table will highlight these requirements in a <red>red</red> text.<br />
+		<br />
 		Any other parameter that does not meet any of the requirements in the following table will be injected as <Coding>null</Coding> or as one of 
 		<u>path variables</u> based on the variable <red>Name</red>.<br /><br />
 		<div style="display:block;max-width:100%;overflow-x:auto">
@@ -264,20 +287,12 @@ async function getData(){
 
 				<tbody>
 					<tr>
-						<td><Coding>$e</Coding></td>
-						<td><Coding><red>HttpEvent</red></Coding></td>
-						<td>
-							This is the HttpEvent that manages the current request.<br />You can also find this object in the global $_EVENT variable.<br />
-							This object contains data regarding the current connection, the socket object as a stream and a handful of useful methods to manipulate 
-							the request, starting sessions, setting cookies ecc.
-						</td>
-					</tr>
-					<tr>
 						<td><Coding>&$onClose</Coding></td>
 						<td><Coding><red>HttpEventOnClose</red></Coding></td>
 						<td>
 							This is the pointer to a cycle class. Its <b>run</b> method will be trigered when the connection is over.<br />
-							Usually you would want to close your database connection here or do some chores <b>after</b> replying to the user.<br /><br />
+							Usually you would want to close your database connection here or do some chores <b>after</b> replying to the user.<br />
+							<br />
 							<b>NOTE:</b>&nbsp;&nbsp;it is important that you take in this parameter as a pointer.
 						</td>
 					</tr>
@@ -285,9 +300,8 @@ async function getData(){
 						<td><Coding><red>&$session</red></Coding></td>
 						<td><Coding><red>array</red></Coding></td>
 						<td>
-							Contains the current use session array, which you can freely modify (is specified as a pointer).<br /><br/>
-
-							This parameter injection requires the variable itself to be named exactly <red>$session</red>.<br />
+							Contains the current use session array, which you can freely modify (is specified as a pointer).<br />
+							<br/>
 							Pointer is not required.
 						</td>
 					</tr>
@@ -302,13 +316,15 @@ async function getData(){
 						<td><Coding><red>&$body</red></Coding></td>
 						<td><Coding><red>string</red> or <red>int</red> or <red>array</red></Coding></td>
 						<td>
-							Contains the body of the request.<br /><br />
-
-							This parameter injection requires the variable itself to be named exactly <red>body</red>, of type <red>string</red> or <red>int</red> or <red>array</red>.<br />
+							Contains the body of the request.<br />
+							<br />
+							This parameter injection requires the variable itself to be named exactly 
+							<red>body</red>, of type <red>string</red> or <red>int</red> or <red>array</red>.<br />
 							<br />
 							Pointer is not required.<br /><br />
 
-							<b>NOTE:</b> if the parameter is specified to be of type <red>array</red>, your application will attempt to parse the body as a json object or array.
+							<b>NOTE:</b> if the parameter is specified to be of type <red>array</red>, 
+							your application will attempt to parse the body as a json object or array.
 						</td>
 					</tr>
 					<tr>
@@ -347,32 +363,30 @@ async function getData(){
 						<td><Coding>$cookies</Coding></td>
 						<td><Coding><red>HttpRequestCookies</red></Coding></td>
 						<td>
-							Contains an object that helps you read the cookies sent along with the request.
+							Contains an instance of HttpRequestCookies which will help you read the cookies sent along with the request.
 						</td>
 					</tr>
 					<tr>
 						<td><Coding>$cookies</Coding></td>
 						<td><Coding><red>HttpResponseCookies</red></Coding></td>
 						<td>
-							Contains an object that helps you write the cookies your application will send along with the response.
+							Contains an instance of HttpResponseCookies which will help you write the cookies your application will send along with the response.
 						</td>
 					</tr>
 					<tr>
 						<td><Coding>$e</Coding></td>
 						<td><Coding><red><u>Http</u>Event</red></Coding></td>
 						<td>
-							Contains an the HttpEvent instance for the current http request.<br /><br />
-
-							<b>NOTE:</b> the HttpEvent class contains a handful of useful methods and allows specific manipulation of the current request and response.
+							Contains an the HttpEvent instance for the current http request which provides 
+							a handful of useful methods and allows specific manipulation of the current request and response.
 						</td>
 					</tr>
 					<tr>
 						<td><Coding>$e</Coding></td>
 						<td><Coding><red><u>WebSocket</u>Event</red></Coding></td>
 						<td>
-							Contains an the WebSocketEvent instance for the current websocket request.<br /><br />
-
-							<b>NOTE:</b> the WebSocketEvent class contains a handful of useful methods and allows specific manipulation of the current request and response.
+							Contains an the WebSocketEvent instance for the current websocket request which provides 
+							a handful of useful methods and allows specific manipulation of the current request and response.
 						</td>
 					</tr>
 				</tbody>
@@ -381,10 +395,14 @@ async function getData(){
 		<br />
 		<br />
 		All these injections can be defined in both http events and websocket events.<br />
-		This means that it is possible, for example, to manipulate a session from the websocket.
+		This means that it is possible, for example, to manipulate an http session from within a websocket session.
 		<br />
 		<br />
 		<br />
+		<div class="grid-x-center">
+			Developed by <a href="https://github.com/tncrazvan" target="_blank"><u>Razvan Tanase</u></a>
+			<a href="mailto:tangent.jotey@gmail.com"><u>tangent.jotey@gmail.com</u></a>
+		</div>
 	</div>
 </div>
 {/await}
