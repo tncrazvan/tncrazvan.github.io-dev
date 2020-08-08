@@ -129,45 +129,47 @@ async function getData(){
 		<Coding padding="1rem" language="php">{data.event_1}</Coding><br />
 		which can also be written as:<br />
 		<Coding padding="1rem" language="php">{data.event_1_2}</Coding><br />
-		<table>
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Type</th>
-					<th>Description</th>
-				</tr>
-			</thead>
+		<div style="display:block;max-width:100%;overflow-x:auto">
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+						<th>Description</th>
+					</tr>
+				</thead>
 
-			<tbody>
-				<tr>
-					<td><Coding>$test</Coding></td>
-					<td><Coding>string</Coding></td>
-					<td>
-						This parameter is the requested <Coding>&lbrace;test&rbrace;</Coding> path variable<br/><br />
-						<b>NOTE:</b>&nbsp;&nbsp;this parameter is a string, however if it were an <Coding>int</Coding> your application would 
-						try to convert any given value to int and throw an exception on failure, so be aware of this detail.
-					</td>
-				</tr>
-				<tr>
-					<td><Coding>$e</Coding></td>
-					<td><Coding>HttpEvent</Coding></td>
-					<td>
-						This is the HttpEvent that manages the current request.<br />You can also find this object in the global $_EVENT variable.<br />
-						This object contains data regarding the current connection, the socket object as a stream and a handful of useful methods to manipulate 
-						the request, starting sessions, setting cookies ecc.
-					</td>
-				</tr>
-				<tr>
-					<td><Coding>&$onClose</Coding></td>
-					<td><Coding>HttpEventOnClose</Coding></td>
-					<td>
-						This is the pointer to a cycle class. Its <b>run</b> method will be trigered when the connection is over.<br />
-						Usually you would want to close your database connection here or do some chores <b>after</b> replying to the user.<br /><br />
-						<b>NOTE:</b>&nbsp;&nbsp;it is important that you take in this parameter as a pointer.
-					</td>
-				</tr>
-			</tbody>
-		</table>
+				<tbody>
+					<tr>
+						<td><Coding>$test</Coding></td>
+						<td><Coding>string</Coding></td>
+						<td>
+							This parameter is the requested <Coding>&lbrace;test&rbrace;</Coding> path variable<br/><br />
+							<b>NOTE:</b>&nbsp;&nbsp;this parameter is a string, however if it were an <Coding>int</Coding> your application would 
+							try to convert any given value to int and throw an exception on failure, so be aware of this detail.
+						</td>
+					</tr>
+					<tr>
+						<td><Coding>$e</Coding></td>
+						<td><Coding>HttpEvent</Coding></td>
+						<td>
+							This is the HttpEvent that manages the current request.<br />You can also find this object in the global $_EVENT variable.<br />
+							This object contains data regarding the current connection, the socket object as a stream and a handful of useful methods to manipulate 
+							the request, starting sessions, setting cookies ecc.
+						</td>
+					</tr>
+					<tr>
+						<td><Coding>&$onClose</Coding></td>
+						<td><Coding>HttpEventOnClose</Coding></td>
+						<td>
+							This is the pointer to a cycle class. Its <b>run</b> method will be trigered when the connection is over.<br />
+							Usually you would want to close your database connection here or do some chores <b>after</b> replying to the user.<br /><br />
+							<b>NOTE:</b>&nbsp;&nbsp;it is important that you take in this parameter as a pointer.
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 		<br />
 		Usually the function would return a custom object, which would be converted int a json or xml depending on the request "Accept" header, 
 		but in this case it return a <Coding>HomePage</Coding> instance, which extends the <Coding>HttpEventHandler</Coding> abstract class:<br />
@@ -192,33 +194,35 @@ async function getData(){
 		<br />
 		The returned script makes use of some methods:<br />
 		<br />
-		<table>
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Description</th>
-				</tr>
-			</thead>
-
-			<tbody>
-				<tr>
-					<td><Coding language="php">Script::args()</Coding></td>
-					<td>
-						Returns the arguments passed to the 
-						<Coding language="php">ServerFile::include('./templates/index.php',...$args)</Coding>
-						call.
-					</td>
-				</tr>
-				<tr>
-					<td><Coding language="php">&Script::startSession();</Coding></td>
-					<td>
-						Returns the pointer of the user session array, which you can freely modify.<br />
-						If the user does not already have a session or the <b>sessionId</b> cookie is not valid, 
-						a new session is created instead and the response <b>sessionId</b> cookie is <u>updated</u>.
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<div style="display:block;max-width:100%;overflow-x:auto">
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+	
+				<tbody>
+					<tr>
+						<td><Coding language="php">Script::args()</Coding></td>
+						<td>
+							Returns the arguments passed to the 
+							<Coding language="php">ServerFile::include('./templates/index.php',...$args)</Coding>
+							call.
+						</td>
+					</tr>
+					<tr>
+						<td><Coding language="php">&Script::startSession();</Coding></td>
+						<td>
+							Returns the pointer of the user session array, which you can freely modify.<br />
+							If the user does not already have a session or the <b>sessionId</b> cookie is not valid, 
+							a new session is created instead and the response <b>sessionId</b> cookie is <u>updated</u>.
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 		<br />
 		<br />
 		<br />
@@ -248,130 +252,132 @@ async function getData(){
 		Note that your application will inject your parameter based on either its <red>Name</red> or <red>Type</red> or a combination of the two.<br />
 		Any other parameter that does not meet any of the requirements in the following table will be injected as <Coding>null</Coding> or as one of 
 		<u>path variables</u> based on the variable <red>Name</red>.<br /><br />
-		<table>
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Type</th>
-					<th>Description</th>
-				</tr>
-			</thead>
+		<div style="display:block;max-width:100%;overflow-x:auto">
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+						<th>Description</th>
+					</tr>
+				</thead>
 
-			<tbody>
-				<tr>
-					<td><Coding>$e</Coding></td>
-					<td><Coding><red>HttpEvent</red></Coding></td>
-					<td>
-						This is the HttpEvent that manages the current request.<br />You can also find this object in the global $_EVENT variable.<br />
-						This object contains data regarding the current connection, the socket object as a stream and a handful of useful methods to manipulate 
-						the request, starting sessions, setting cookies ecc.
-					</td>
-				</tr>
-				<tr>
-					<td><Coding>&$onClose</Coding></td>
-					<td><Coding><red>HttpEventOnClose</red></Coding></td>
-					<td>
-						This is the pointer to a cycle class. Its <b>run</b> method will be trigered when the connection is over.<br />
-						Usually you would want to close your database connection here or do some chores <b>after</b> replying to the user.<br /><br />
-						<b>NOTE:</b>&nbsp;&nbsp;it is important that you take in this parameter as a pointer.
-					</td>
-				</tr>
-				<tr>
-					<td><Coding><red>&$session</red></Coding></td>
-					<td><Coding><red>array</red></Coding></td>
-					<td>
-						Contains the current use session array, which you can freely modify (is specified as a pointer).<br /><br/>
+				<tbody>
+					<tr>
+						<td><Coding>$e</Coding></td>
+						<td><Coding><red>HttpEvent</red></Coding></td>
+						<td>
+							This is the HttpEvent that manages the current request.<br />You can also find this object in the global $_EVENT variable.<br />
+							This object contains data regarding the current connection, the socket object as a stream and a handful of useful methods to manipulate 
+							the request, starting sessions, setting cookies ecc.
+						</td>
+					</tr>
+					<tr>
+						<td><Coding>&$onClose</Coding></td>
+						<td><Coding><red>HttpEventOnClose</red></Coding></td>
+						<td>
+							This is the pointer to a cycle class. Its <b>run</b> method will be trigered when the connection is over.<br />
+							Usually you would want to close your database connection here or do some chores <b>after</b> replying to the user.<br /><br />
+							<b>NOTE:</b>&nbsp;&nbsp;it is important that you take in this parameter as a pointer.
+						</td>
+					</tr>
+					<tr>
+						<td><Coding><red>&$session</red></Coding></td>
+						<td><Coding><red>array</red></Coding></td>
+						<td>
+							Contains the current use session array, which you can freely modify (is specified as a pointer).<br /><br/>
 
-						This parameter injection requires the variable itself to be named exactly <red>$session</red>.<br />
-						Pointer is not required.
-					</td>
-				</tr>
-				<tr>
-					<td><Coding><red>$method</red></Coding></td>
-					<td><Coding><red>string</red></Coding></td>
-					<td>
-						Contains the method name of the request.
-					</td>
-				</tr>
-				<tr>
-					<td><Coding><red>&$body</red></Coding></td>
-					<td><Coding><red>string</red> or <red>int</red> or <red>array</red></Coding></td>
-					<td>
-						Contains the body of the request.<br /><br />
+							This parameter injection requires the variable itself to be named exactly <red>$session</red>.<br />
+							Pointer is not required.
+						</td>
+					</tr>
+					<tr>
+						<td><Coding><red>$method</red></Coding></td>
+						<td><Coding><red>string</red></Coding></td>
+						<td>
+							Contains the method name of the request.
+						</td>
+					</tr>
+					<tr>
+						<td><Coding><red>&$body</red></Coding></td>
+						<td><Coding><red>string</red> or <red>int</red> or <red>array</red></Coding></td>
+						<td>
+							Contains the body of the request.<br /><br />
 
-						This parameter injection requires the variable itself to be named exactly <red>body</red>, of type <red>string</red> or <red>int</red> or <red>array</red>.<br />
-						<br />
-						Pointer is not required.<br /><br />
+							This parameter injection requires the variable itself to be named exactly <red>body</red>, of type <red>string</red> or <red>int</red> or <red>array</red>.<br />
+							<br />
+							Pointer is not required.<br /><br />
 
-						<b>NOTE:</b> if the parameter is specified to be of type <red>array</red>, your application will attempt to parse the body as a json object or array.
-					</td>
-				</tr>
-				<tr>
-					<td><Coding>&$onOpen</Coding></td>
-					<td><Coding><red>WebSocketEventOnOpen</red></Coding></td>
-					<td>
-						Pointer to a websocket cycle function.<br />
-						This function will trigger when the websocket connection opens (handshake successul).
-					</td>
-				</tr>
-				<tr>
-					<td><Coding>&$onMessage</Coding></td>
-					<td><Coding><red>WebSocketEventOnMessage</red></Coding></td>
-					<td>
-						Pointer to a websocket cycle function.<br />
-						This function will trigger when the websocket connection recieves a message.
-					</td>
-				</tr>
-				<tr>
-					<td><Coding>&$onClose</Coding></td>
-					<td><Coding><red><u>WebSocket</u>EventOnClose</red></Coding></td>
-					<td>
-						Pointer to a websocket cycle function.<br />
-						This function will trigger when the websocket connection closes (by either parties).
-					</td>
-				</tr>
-				<tr>
-					<td><Coding>&$onClose</Coding></td>
-					<td><Coding><red><u>Http</u>EventOnClose</red></Coding></td>
-					<td>
-						Pointer to an htpp cycle function.<br />
-						This function will trigger when the http connection closes (by either parties).
-					</td>
-				</tr>
-				<tr>
-					<td><Coding>$cookies</Coding></td>
-					<td><Coding><red>HttpRequestCookies</red></Coding></td>
-					<td>
-						Contains an object that helps you read the cookies sent along with the request.
-					</td>
-				</tr>
-				<tr>
-					<td><Coding>$cookies</Coding></td>
-					<td><Coding><red>HttpResponseCookies</red></Coding></td>
-					<td>
-						Contains an object that helps you write the cookies your application will send along with the response.
-					</td>
-				</tr>
-				<tr>
-					<td><Coding>$e</Coding></td>
-					<td><Coding><red><u>Http</u>Event</red></Coding></td>
-					<td>
-						Contains an the HttpEvent instance for the current http request.<br /><br />
+							<b>NOTE:</b> if the parameter is specified to be of type <red>array</red>, your application will attempt to parse the body as a json object or array.
+						</td>
+					</tr>
+					<tr>
+						<td><Coding>&$onOpen</Coding></td>
+						<td><Coding><red>WebSocketEventOnOpen</red></Coding></td>
+						<td>
+							Pointer to a websocket cycle function.<br />
+							This function will trigger when the websocket connection opens (handshake successul).
+						</td>
+					</tr>
+					<tr>
+						<td><Coding>&$onMessage</Coding></td>
+						<td><Coding><red>WebSocketEventOnMessage</red></Coding></td>
+						<td>
+							Pointer to a websocket cycle function.<br />
+							This function will trigger when the websocket connection recieves a message.
+						</td>
+					</tr>
+					<tr>
+						<td><Coding>&$onClose</Coding></td>
+						<td><Coding><red><u>WebSocket</u>EventOnClose</red></Coding></td>
+						<td>
+							Pointer to a websocket cycle function.<br />
+							This function will trigger when the websocket connection closes (by either parties).
+						</td>
+					</tr>
+					<tr>
+						<td><Coding>&$onClose</Coding></td>
+						<td><Coding><red><u>Http</u>EventOnClose</red></Coding></td>
+						<td>
+							Pointer to an htpp cycle function.<br />
+							This function will trigger when the http connection closes (by either parties).
+						</td>
+					</tr>
+					<tr>
+						<td><Coding>$cookies</Coding></td>
+						<td><Coding><red>HttpRequestCookies</red></Coding></td>
+						<td>
+							Contains an object that helps you read the cookies sent along with the request.
+						</td>
+					</tr>
+					<tr>
+						<td><Coding>$cookies</Coding></td>
+						<td><Coding><red>HttpResponseCookies</red></Coding></td>
+						<td>
+							Contains an object that helps you write the cookies your application will send along with the response.
+						</td>
+					</tr>
+					<tr>
+						<td><Coding>$e</Coding></td>
+						<td><Coding><red><u>Http</u>Event</red></Coding></td>
+						<td>
+							Contains an the HttpEvent instance for the current http request.<br /><br />
 
-						<b>NOTE:</b> the HttpEvent class contains a handful of useful methods and allows specific manipulation of the current request and response.
-					</td>
-				</tr>
-				<tr>
-					<td><Coding>$e</Coding></td>
-					<td><Coding><red><u>WebSocket</u>Event</red></Coding></td>
-					<td>
-						Contains an the WebSocketEvent instance for the current websocket request.<br /><br />
+							<b>NOTE:</b> the HttpEvent class contains a handful of useful methods and allows specific manipulation of the current request and response.
+						</td>
+					</tr>
+					<tr>
+						<td><Coding>$e</Coding></td>
+						<td><Coding><red><u>WebSocket</u>Event</red></Coding></td>
+						<td>
+							Contains an the WebSocketEvent instance for the current websocket request.<br /><br />
 
-						<b>NOTE:</b> the WebSocketEvent class contains a handful of useful methods and allows specific manipulation of the current request and response.
-					</td>
-				</tr>
-			</tbody>
-		</table>
+							<b>NOTE:</b> the WebSocketEvent class contains a handful of useful methods and allows specific manipulation of the current request and response.
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 		<br />
 		<br />
 		All these injections can be defined in both http events and websocket events.<br />

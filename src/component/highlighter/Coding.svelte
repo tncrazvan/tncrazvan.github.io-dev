@@ -13,6 +13,7 @@
 
 <style>
 	pre{
+		max-width: 100%;
 		display: inline-block;
 		top: 0.4rem;
 		position: relative;
