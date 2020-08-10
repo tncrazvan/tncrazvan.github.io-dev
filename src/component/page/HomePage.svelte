@@ -57,7 +57,7 @@ async function getData(){
 		<SectionTitle id="start">How to start</SectionTitle>
 		<ul class="collection">
 			<li class="collection-item">
-					<b>Make sure you have php 7.2 or higher installed</b>
+					<b>Make sure you have php 7.4.8 or higher installed</b>
 			</li>
 			<li class="collection-item">
 					<b>Install composer</b><br />
