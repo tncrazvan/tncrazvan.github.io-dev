@@ -81,8 +81,8 @@ async function getData(){
 			</li>
 			<li class="collection-item">
 					<b>Run the server</b><br  />
-					Now you need to run CatPaw from the terminal using 
-					<Coding language="bash">sudo ./start</Coding>
+					You can now run your server from the terminal using 
+					<Coding language="bash">sudo php start</Coding>
 			</li>
 		</ul>
 		<br />
@@ -106,7 +106,7 @@ async function getData(){
 		<p>
 			Your application will have a "<u>main.php</u>" file which will define all your options, including your events and their path mapping.<br />
 			These events are mapped on an associative array.<br />
-			The <b>key</b> of arrayare the public path mappings, while the values are the actual callback
+			The <b>keys</b> are the public path mappings, while the values are the actual callback
 			functions which will be called everytime a path matches a request.<br />
 			<br />
 
@@ -179,20 +179,20 @@ async function getData(){
 			</table>
 		</div>
 		<br />
-		Usually the function would return a  string, number or custom object which would be converted into json or xml depending on the request "Accept" header.<br/>
-		In this case it returns a <Coding>HomePage</Coding> instance, which is a special class since it extends the <Coding>HttpEventHandler</Coding> abstract class:<br />
+		Usually the function would return a string, number or custom object which would be converted into json or xml depending on the request "Accept" header.<br/>
+		In this case it returns an instance of the <Coding>HomePage</Coding> class which extends the <Coding>HttpEventHandler</Coding> abstract class:<br />
 		<Coding padding="1rem" language="php">{data.home_page}</Coding>
 		<br />
 		<br />
-		If your callback function returns an instance of <Coding>HttpEventHandler</Coding> your application will look for a implementation of
+		If your callback function returns an instance of a class that extends <Coding>HttpEventHandler</Coding> your application will look for a implementation of
 		an <Coding>HttpMethod*</Coding> interface and run it's implamentation method if it matches the request "method" header.<br />
 		<br />
-		In this case the <Coding>HomePage</Coding> class extends <Coding>HttpEventHandler</Coding> (which tells your aplication to <u>not</u> return the instances
-		of this class directly) and implements the <Coding>HttpMethodGet</Coding> and <Coding>HttpMethodPost</Coding> interfaces
-		(which tells your application to look for a <Coding>get</Coding> or <Coding>post</Coding> method).<br />
+		For example the <Coding>HomePage</Coding> class extends <Coding>HttpEventHandler</Coding> and implements 
+		the <Coding>HttpMethodGet</Coding> and <Coding>HttpMethodPost</Coding> interfaces, this implies that the 
+		HomePage class can only be called through either <b>GET</b> or <b>POST</b> requests.<br />
 		<br />
-		<b>TLDR;</b> any <b>GET</b> requests to <Coding>/hello/&lbrace;test&rbrace;</Coding> will run the <Coding>post</Coding> method
-		and any <b>POST</b> requests to <Coding>/hello/&lbrace;test&rbrace;</Coding> will run the <Coding>get</Coding> method instaed.<br />
+		<b>TLDR;</b> any <b>GET</b> requests to <Coding>/hello/&lbrace;test&rbrace;</Coding> will run the <Coding>get</Coding> method
+		and any <b>POST</b> requests to <Coding>/hello/&lbrace;test&rbrace;</Coding> will run the <Coding>post</Coding> method instead.<br />
 		<br />
 		Any other type of requests that are not <b>GET</b> or <b>POST</b> will return a blank <Coding>"404 METHOD NOT ALLOWED"</Coding> response.
 		<br/>
