@@ -19,6 +19,7 @@ async function getData(){
 		home_page: (await (await fetch("/docs/HomePage.php")).text()).replace(REGEX,""),
 		websocket_test: (await (await fetch("/docs/WebSocketTest.php")).text()).replace(REGEX,""),
 		websocket_test_constructor_only: (await (await fetch("/docs/WebSocketTest_constructor_only.php")).text()).replace(REGEX,""),
+		http_consumer_example: (await (await fetch("/docs/http_consumer_example.php")).text()).replace(REGEX,""),
 		index: (await (await fetch("/docs/index.php")).text())
 	};
 
@@ -286,6 +287,24 @@ async function getData(){
 				</thead>
 
 				<tbody>
+					<tr>
+						<td><Coding>$consumer</Coding></td>
+						<td><Coding><red>HttpConsumer</red></Coding></td>
+						<td>
+							Normaly http callbacks are instantiated and called when the server has fully read all the data within a request.<br /><br />
+							This injection makes is to that your callback will be instantiated as soon as the request is detected.<br />
+							When the callback is instantiated the first payload of data is set to the <b>string &$body</b> injection, and then any extra data
+							will be injected into the HttpConsumer object.<br /><br />
+							
+							Here is an example: <br />
+							<Coding language="php">{data.http_consumer_example}</Coding><br />
+							This function will write the body of the request to a file as the data comes in.<br />
+							Note that the <Coding language="php">$consumer-&gt;consume($body)</Coding> call replaces the contents 
+							of the <Coding language="php">$body</Coding> variable every iteration and discards the old content.
+							<br />
+							<b>NOTE:</b>&nbsp;&nbsp;it is important that you take in this parameter as a pointer.
+						</td>
+					</tr>
 					<tr>
 						<td><Coding>&$onClose</Coding></td>
 						<td><Coding><red>HttpEventOnClose</red></Coding></td>
