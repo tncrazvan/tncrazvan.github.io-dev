@@ -6,3 +6,4 @@ src/style/materialize/materialize.css
 src/style/extra/extra.css
 .DS_Store
 src/svelte-shared/
+package-lock.json
