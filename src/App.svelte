@@ -4,6 +4,7 @@ import PaddingStyles from './svelte-shared/components/styles/PaddingStyles.svelt
 import MarginStyles from './svelte-shared/components/styles/MarginStyles.svelte';
 import Theme from './component/theme/Theme.svelte';
 import HomePage from './component/page/HomePage.svelte';
+import DocumentationPage from './component/page/DocumentationPage.svelte';
 import { Router, Route } from "svelte-routing";
 
 import '../node_modules/materialize-css/dist/js/materialize.min.js';
@@ -15,12 +16,16 @@ import './style/margin/margin.css';
 import './style/padding/padding.css';
 import './style/_main/_main.css';
 import OtherStyles from './svelte-shared/components/styles/OtherStyles.svelte';
+import TopMenu from './component/menu/TopMenu.svelte';
 
 let url = window.location.pathname;
 </script>
+
+<TopMenu />
+
 <Router url="{url}">
     <Route path="/" component="{HomePage}" />
-    <Route path="/index.html" component="{HomePage}" />
+	<Route path="/index.html" component="{HomePage}" />
 </Router>
 <GridStyles />
 <OtherStyles />

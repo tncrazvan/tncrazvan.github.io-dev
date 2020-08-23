@@ -2,7 +2,6 @@
 import SectionTitle from './../text/SectionTitle.svelte';
 import IconButton from '../button/IconButton.svelte';
 import Coding from './../highlighter/Coding.svelte';
-import TopMenu from './../menu/TopMenu.svelte';
 import { fly, fade } from 'svelte/transition';
 import Spinner from '../Spinner.svelte';
 
@@ -42,7 +41,6 @@ async function getData(){
 		offset-l1 l10
 		offset-xl2 xl8
 	">
-		<TopMenu />
 
 		<img class="top-logo" src="/images/logo.png" alt="logo">
 		<h4 class="top-title">What is CatPaw?</h4>
