@@ -7,3 +7,4 @@ src/style/extra/extra.css
 src/shared/
 .DS_Store
 src/svelte-shared/
+src/svelte-shared
