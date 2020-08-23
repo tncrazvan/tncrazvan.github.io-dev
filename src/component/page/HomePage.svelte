@@ -69,7 +69,7 @@ async function getData(){
 			<li class="collection-item">
 					<b>Make a project</b><br />
 					Run 
-					<Coding language="bash">composer create-project <b>{data.location}</b> ProjectName -sdev</Coding>
+					<Coding language="bash">composer create-project <b>{data.location}</b> ProjectName</Coding>
 					to make a new CatPaw project from the public skeleton template
 			</li>
 			<li class="collection-item">
