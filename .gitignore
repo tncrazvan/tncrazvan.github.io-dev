@@ -4,7 +4,4 @@ src/style/main.css
 src/style/scrollbar/scrollbar.css
 src/style/materialize/materialize.css
 src/style/extra/extra.css
-src/shared/
 .DS_Store
-src/svelte-shared/
-src/svelte-shared
