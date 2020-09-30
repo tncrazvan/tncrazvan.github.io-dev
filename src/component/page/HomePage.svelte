@@ -81,7 +81,7 @@ async function getData(){
 			<li class="collection-item">
 					<b>Run the server</b><br  />
 					You can now run your server from the terminal using 
-					<Coding language="bash">sudo php start</Coding>
+					<Coding language="bash">sudo php start.php</Coding>
 			</li>
 		</ul>
 		<br />
