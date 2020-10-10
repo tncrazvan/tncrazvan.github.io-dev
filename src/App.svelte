@@ -16,12 +16,9 @@ import './style/margin/margin.css';
 import './style/padding/padding.css';
 import './style/_main/_main.css';
 import OtherStyles from './svelte-shared/components/styles/OtherStyles.svelte';
-import TopMenu from './component/menu/TopMenu.svelte';
 
 let url = window.location.pathname;
 </script>
-
-<TopMenu />
 
 <Router url="{url}">
     <Route path="/" component="{HomePage}" />
@@ -37,7 +34,6 @@ let url = window.location.pathname;
 }}/>
 
 <style>
-
 	:global(html,body){
 		width: 100%;
 		height: 100%;
